@@ -1,0 +1,20 @@
+# Core runtime dependency for the dispatch/ops/scheduler logic.
+# numpy is imported at module level by the dispatcher and all numeric ops.
+numpy>=1.24
+
+# --- Optional / feature-gated dependencies -------------------------------
+# The modules below import these only inside functions or try/except guards,
+# so they are NOT required to import the core engine. Install the ones you
+# need for the corresponding feature. Versions are floors, not hard pins,
+# because the right build is platform-specific (CPU vs ROCm/Vulkan vs NPU).
+#
+#   scipy>=1.10        # engine/gaming_demo.py (scipy.ndimage.zoom)
+#   onnx>=1.15         # engine/onnx_dispatcher.py, engine/musicgen_tri.py
+#   torch>=2.1         # engine/hdc_scheduler.py, engine/musicgen_*.py
+#   torchhd>=5.5       # engine/hdc_scheduler.py (hyperdimensional routing)
+#
+# Hardware-specific runtimes (no portable PyPI wheel; install per platform):
+#   kp                 # Kompute / Vulkan GPU belt (engine/ops.py)
+#   pyxrt              # AMD XRT NPU runtime (engine/npu_belt.py)
+#   iree-compiler,
+#   iree-runtime       # IREE NPU deployment (engine/npu_scheduler.py)

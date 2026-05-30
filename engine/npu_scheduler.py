@@ -18,7 +18,6 @@ Training:
 
 import os
 import time
-from pathlib import Path
 from typing import Optional, Tuple
 
 import numpy as np
@@ -192,7 +191,7 @@ class NpuScheduler:
         """
         try:
             import iree.compiler as ireec
-            import iree.runtime as ireert
+            import iree.runtime as ireert  # noqa: F401  (runtime availability probe)
 
             # The scheduler is a 2-layer MLP — trivially compilable
             # Export weights as constant tensors in MLIR

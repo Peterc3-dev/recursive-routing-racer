@@ -12,10 +12,9 @@ And ONNX model analysis:
 """
 
 import os
-import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, Optional
+from typing import Optional
 
 import numpy as np
 
@@ -113,7 +112,7 @@ class Dispatcher:
                 device = Device.CPU
                 return DispatchDecision(
                     device=device,
-                    reason=f"reroute: npu unavailable → cpu",
+                    reason="reroute: npu unavailable → cpu",
                     confidence=0.7,
                 )
 
@@ -165,7 +164,7 @@ class Dispatcher:
         # Default to CPU
         return DispatchDecision(
             device=Device.CPU,
-            reason=f"heuristic: default → cpu",
+            reason="heuristic: default → cpu",
             confidence=0.3,
         )
 

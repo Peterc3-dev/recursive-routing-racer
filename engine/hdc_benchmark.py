@@ -6,10 +6,14 @@ import time
 import numpy as np
 import sys
 import os
-sys.path.insert(0, os.path.expanduser("~/projects/rag-race-router"))
 
-from engine.npu_scheduler import NpuScheduler
-from engine.hdc_scheduler import HdcScheduler
+# Make the repo root importable regardless of where it's checked out.
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+
+from engine.npu_scheduler import NpuScheduler  # noqa: E402
+from engine.hdc_scheduler import HdcScheduler  # noqa: E402
 
 
 def generate_workload(n_ops=100):
@@ -210,7 +214,7 @@ def benchmark():
         json.dump(results, f, indent=2)
 
     print()
-    print(f"Results saved to /tmp/hdc_benchmark_results.json")
+    print("Results saved to /tmp/hdc_benchmark_results.json")
     print(f"\nOverall winner: {results['winner']}")
     return results
 
