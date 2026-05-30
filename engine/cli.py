@@ -190,13 +190,13 @@ def main():
         else:
             e = results["engine"]
             c = results["cpu_baseline"]
-            print(f"\nFrame pipeline: logic(CPU) -> geometry(GPU) -> shade(GPU) -> upscale(NPU) -> post(CPU)")
+            print("\nFrame pipeline: logic(CPU) -> geometry(GPU) -> shade(GPU) -> upscale(NPU) -> post(CPU)")
             print()
-            print(f"CPU-only baseline:")
+            print("CPU-only baseline:")
             print(f"  Avg frame: {c['avg_ms']:.1f}ms ({c['avg_fps']:.0f} FPS)")
             print(f"  1% low:    {c['p1_low_ms']:.1f}ms ({c['p1_low_fps']:.0f} FPS)")
             print()
-            print(f"Engine (pulsed three-processor):")
+            print("Engine (pulsed three-processor):")
             print(f"  Avg frame: {e['avg_ms']:.1f}ms ({e['avg_fps']:.0f} FPS)")
             print(f"  1% low:    {e['p1_low_ms']:.1f}ms ({e['p1_low_fps']:.0f} FPS)")
             print(f"  Peak GPU:  {results['peak_gpu_temp']:.0f}C")
@@ -276,7 +276,6 @@ def main():
 
 def _run_status(engine: RagRaceRouter, as_json: bool):
     """Show live system status with all three processors."""
-    from pathlib import Path
 
     engine.start()
     time.sleep(1.0)
@@ -320,13 +319,9 @@ def _run_status(engine: RagRaceRouter, as_json: bool):
 def _run_demo(engine: RagRaceRouter, runs: int, verbose: bool, as_json: bool):
     """Run the three-processor dispatch demo."""
     from .ops import (
-        build_demo_workload, cpu_tokenize, cpu_embed, cpu_matmul,
-        cpu_attention, cpu_normalize, cpu_project, cpu_decode,
-        gpu_matmul, gpu_attention, gpu_project,
-        npu_embed, npu_normalize,
+        build_demo_workload,
     )
     from .executor import WorkItem
-    import numpy as np
 
     engine.start()
     time.sleep(1.5)  # Wait for monitor to collect GPU metrics via amdgpu_top
@@ -468,9 +463,9 @@ def _run_demo(engine: RagRaceRouter, runs: int, verbose: bool, as_json: bool):
 def _resolve_op(engine, step, results, gpu_ok, npu_ok):
     """Resolve function, args, and device for a workload step. Returns (fn, args, device, reason)."""
     from .ops import (
-        cpu_tokenize, cpu_embed, cpu_matmul, cpu_attention,
+        cpu_embed, cpu_attention,
         cpu_normalize, cpu_project, cpu_decode,
-        gpu_matmul, gpu_attention, gpu_project,
+        gpu_attention, gpu_project,
         npu_embed, npu_normalize,
     )
     import numpy as np
@@ -566,7 +561,6 @@ def _pretty_print(data: dict, indent: int = 0):
 
 def _run_analyze(model_path: str, as_json: bool):
     """Analyze an ONNX model and display per-operator routing."""
-    import os
     from .onnx_dispatcher import OnnxDispatcher
 
     if not os.path.exists(model_path):
@@ -610,7 +604,6 @@ def _run_train_scheduler(engine: RagRaceRouter, runs: int, verbose: bool, as_jso
     """Train the neural scheduler by running simulated workloads."""
     from .npu_scheduler import NpuScheduler
     from .ops import build_demo_workload
-    import os
     import numpy as np
 
     scheduler = NpuScheduler()
@@ -711,7 +704,6 @@ def _run_train_scheduler(engine: RagRaceRouter, runs: int, verbose: bool, as_jso
 def _run_scheduler_cmd(cmd: str, as_json: bool):
     """Show scheduler status or run benchmark."""
     from .npu_scheduler import NpuScheduler
-    import os
 
     scheduler = NpuScheduler()
     weights_path = os.path.expanduser("~/.rag-race-router/scheduler.npz")
@@ -726,7 +718,7 @@ def _run_scheduler_cmd(cmd: str, as_json: bool):
     if cmd == "show":
         npu_status = scheduler.deploy_to_npu()
         print()
-        print(f"NPU Scheduler Status:")
+        print("NPU Scheduler Status:")
         print(f"  Weights: {weights_path}")
         print(f"  Training runs: {scheduler.total_updates}")
         print(f"  Running on: {npu_status}")

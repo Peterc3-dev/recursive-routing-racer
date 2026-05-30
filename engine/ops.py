@@ -5,9 +5,7 @@ to the appropriate belt via the dispatcher.
 """
 
 import struct
-import time
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 
@@ -206,7 +204,6 @@ def build_demo_workload(seq_len: int = 16, dim: int = 512, proj_dim: int = 128):
     # Pre-generate data for independent ops
     a = np.random.randn(dim, dim).astype(np.float32)
     b = np.random.randn(dim, dim).astype(np.float32)
-    proj_weight = np.random.randn(dim, proj_dim).astype(np.float32)
 
     workload = [
         # (name, cpu_fn, gpu_fn, npu_fn, args, input_size, deps)

@@ -9,10 +9,9 @@ import threading
 import time
 from concurrent.futures import Future, ThreadPoolExecutor
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Any, Callable, Optional
 
-from .dispatcher import Device, Dispatcher, DispatchDecision
+from .dispatcher import Device, Dispatcher
 from .pulse import PulseController
 from .monitor import HardwareMonitor
 from .npu_belt import NpuExecutionBelt

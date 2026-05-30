@@ -19,7 +19,10 @@ import time
 from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, os.path.expanduser("~/projects/rag-race-router"))
+# Make the repo root importable regardless of where it's checked out.
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
 
 
 def gpu_temp() -> float:
@@ -328,8 +331,8 @@ def run_tri_processor(prompt: str = "cold atmospheric, minimal",
         print(f"  Encoder: {analysis['gpu_ops']} MatMul ops -> GPU (Vulkan/Kompute)")
         print(f"           {analysis['npu_ops']} activation/norm ops -> NPU (XDNA 2)")
         print(f"           {analysis['cpu_ops']} control flow ops -> CPU")
-        print(f"  Decoder: autoregressive loop -> GPU (pulsed, thermal-aware)")
-        print(f"  Audio codec: -> CPU (EnCodec decoding)")
+        print("  Decoder: autoregressive loop -> GPU (pulsed, thermal-aware)")
+        print("  Audio codec: -> CPU (EnCodec decoding)")
 
     # Save results
     results_path = os.path.join(output_dir, "musicgen_tri_results.json")

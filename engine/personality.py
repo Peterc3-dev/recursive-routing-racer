@@ -9,7 +9,6 @@ import json
 import sqlite3
 import time
 from pathlib import Path
-from typing import Optional
 
 
 DB_PATH = Path.home() / ".rag-race-router" / "personality.db"
@@ -208,7 +207,7 @@ class Personality:
         by_device = data["by_device"]
 
         if not rules and total == 0:
-            return f"Hardware Personality: No data yet. Run --demo to build profile."
+            return "Hardware Personality: No data yet. Run --demo to build profile."
 
         lines = [f"Hardware Personality ({total} runs):"]
 

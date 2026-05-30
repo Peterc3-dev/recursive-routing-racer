@@ -8,7 +8,6 @@ Connects:
 """
 
 import time
-import numpy as np
 
 try:
     import torch
@@ -32,12 +31,8 @@ class TriProcessorInference:
         self._monitor = monitor
 
         # GPU belt (torch-vulkan)
-        self._gpu_available = False
-        try:
-            import torch_vulkan
-            self._gpu_available = True
-        except ImportError:
-            pass
+        import importlib.util
+        self._gpu_available = importlib.util.find_spec("torch_vulkan") is not None
 
         # NPU belt (persistent XRT)
         self._npu_belt = None
@@ -87,11 +82,10 @@ class TriProcessorInference:
 
         # HDC routing decision
         if self._hdc and self._hdc.codebook:
-            device, confidence = self._hdc.dispatch(metrics)
+            device, _confidence = self._hdc.dispatch(metrics)
         else:
             # Cold start: shape-based heuristic
             device = self._heuristic_route(op_type, a, b)
-            confidence = 0.0
 
         # Execute on chosen device
         t0 = time.perf_counter()

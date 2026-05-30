@@ -7,7 +7,7 @@ demonstrates adaptive rerouting as GPU heats up.
 import sys
 import time
 import numpy as np
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
@@ -25,7 +25,7 @@ class StressEntry:
 def run_stress_test(engine, duration_s: int = 120, verbose: bool = False) -> dict:
     """Run thermal stress test with live visualization."""
     from .executor import WorkItem
-    from .ops import cpu_matmul, gpu_matmul, cpu_normalize, npu_normalize
+    from .ops import cpu_matmul, cpu_normalize
 
     engine.start()
     time.sleep(1.0)
@@ -103,13 +103,8 @@ def run_stress_test(engine, duration_s: int = 120, verbose: bool = False) -> dic
                 total_ops += 1
 
             # Live display
-            pct = elapsed / duration_s
             temp_bar = int(min(temp / 100, 1.0) * BAR_W)
             temp_fill = "\u2588" * temp_bar + "\u2591" * (BAR_W - temp_bar)
-
-            devices_str = " | ".join(
-                f"{e.op[:4]}\u2192{e.device}" for e in log[-len(ops_to_run):]
-            )
 
             sys.stdout.write(
                 f"\r  [{int(elapsed):3d}s/{duration_s}s] "

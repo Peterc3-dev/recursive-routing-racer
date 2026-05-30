@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-race-router"
+version = "0.1.0"
+description = "Self-optimizing tri-processor (CPU + iGPU + NPU) inference runtime for AMD Ryzen AI APUs."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+# Feature-gated dependencies imported lazily by individual modules.
+onnx = ["onnx>=1.15"]
+hdc = ["torch>=2.1", "torchhd>=5.5"]
+gaming = ["scipy>=1.10"]
+# Hardware runtimes (kp/pyxrt/iree) have no portable wheels and are installed
+# per platform; see requirements.txt for details.
+dev = ["ruff", "pytest"]
+
+[project.scripts]
+rag-race-router = "engine.cli:main"
+
+[tool.setuptools]
+packages = ["engine"]
+
+[tool.setuptools.package-data]
+engine = ["*.comp", "*.spv"]
+
+[tool.ruff]
+# Match the lint baseline used in CI.
+target-version = "py311"
+
+[tool.pytest.ini_options]
+# The unit-test suite only covers the pure-stdlib modules (see tests/conftest.py).
+testpaths = ["tests"]

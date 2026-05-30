@@ -14,7 +14,7 @@ Backend priority:
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional
+from typing import Callable, Dict
 
 import numpy as np
 
